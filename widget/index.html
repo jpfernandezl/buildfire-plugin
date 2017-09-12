@@ -3,9 +3,9 @@
 <head>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     
-	<!-- Load helper.css to use our helper classes.
+	<!-- Load helper.css to use our helper classes. -->
 	<link href="../../../../styles/helper.css" rel="stylesheet">
-	-->
+	
 	
 	<!-- JS -->
 	<script src="../../../scripts/buildfire.js"></script>
@@ -13,10 +13,41 @@
  	<!--
     <script src="../../../scripts/angular/angular.min.js"></script>
     <script src="../../../scripts/angular/ui-bootstrap.min.js"></script>
+ 	-->
+  <script src="../../../scripts/jquery/jquery-1.11.2.min.js"></script>
+  <script>
+    jQuery(document).ready(function(){
+      buildfire.spinner.show();
+      var tag = 'settings';
+      buildfire.datastore.get(tag, function(err, resp){
+        if (!err) {
+          jQuery('#name').val(resp.data.name);
+          jQuery('#key').val(resp.data.key);
+          jQuery('#message').val(resp.data.message);
+        }
+        buildfire.spinner.hide();
+      });
+      
+      buildfire.datastore.onUpdate(function(event){    
+        if (event.tag == 'settings') {
+          jQuery('#name').val(event.data.name);
+          jQuery('#key').val(event.data.key);
+          jQuery('#message').val(event.data.message);
+        }
+      });
+      
+    });
+  </script>
 
-    <script src="../../../scripts/jquery/jquery-1.11.2.min.js"></script>
-    -->
 </head>
 <body>
+  <form class="padding-top-twenty padding-right-twenty padding-left-twenty padding-bottom-twenty">
+  <label for="name">Name:</label>
+  <input type="text" id="name" class="form-control margin-bottom-fifteen" disabled="disabled" />
+  <label for="key">Key:</label>
+  <input type="text" id="key" class="form-control margin-bottom-fifteen" disabled="disabled" />
+  <label for="message">Message:</label>
+  <textarea id="message" class="form-control margin-bottom-fifteen" disabled="disabled"></textarea>
+  </form>
 </body>
 </html>
