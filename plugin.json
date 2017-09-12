@@ -1,0 +1,21 @@
+{
+  "author":"Juan Pablo Fernandez",
+  "pluginName":"Buildfire Plugin",
+  "pluginDescription":"My first Buildfire plugin.",
+  "supportEmail":"jpfernandezl@gmail.com",
+  "control":{
+    "content":{
+      "enabled":true
+    },
+    "design":{
+      "enabled":true
+    },
+    "settings":{
+      "enabled":true
+    }
+  },
+  "widget":{
+  },
+  "features" : [],
+  "languages" : ["en"]
+}
