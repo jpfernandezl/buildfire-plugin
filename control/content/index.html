@@ -16,15 +16,64 @@
     
 	<!-- JS -->
 	<script src="../../../../scripts/buildfire.js"></script>
-   
+  
+  <script src="../../../../scripts/tinymce/tinymce.min.js"></script>
+  
  	<!--
     <script src="../../../../scripts/angular/angular.min.js"></script>
     <script src="../../../../scripts/angular/ui-bootstrap.min.js"></script>
-
-   <script src="../../../../scripts/jquery/jquery-1.11.2.min.js"></script>
   -->
+   <script src="../../../../scripts/jquery/jquery-1.11.2.min.js"></script>
+   <script>
+     jQuery(document).ready(function(){
+       buildfire.spinner.show();
+       tinymce.init({ selector: '#message' });
+       
+       var tag = 'settings';
+       buildfire.datastore.get(tag, function(err, resp){
+         if (!err) {
+           jQuery('#name').val(resp.data.name);
+           jQuery('#key').val(resp.data.key);
+           tinyMCE.get('message').setContent(resp.data.message);
+         }
+         buildfire.spinner.hide();
+       });
+       
+       jQuery('#submit').click(function(){
+         buildfire.spinner.show();
+         var obj = {
+           name: jQuery('#name').val(),
+           key: jQuery('#key').val(),
+           message: tinyMCE.get('message').getContent()
+         }
+         var tag = 'settings';
+         buildfire.datastore.save (obj, tag, function(err, status){
+           if (err) {
+             jQuery('#alert-wrapper').append('<div class="alert alert-danger margin-bottom-fifteen transition-half">There was a problem saving your data.</div>');
+           } else {
+             jQuery('#alert-wrapper').append('<div class="alert alert-success margin-bottom-fifteen transition-half">Your data was saved successfully.</div>');
+           }
+           buildfire.spinner.hide();
+           setTimeout(function(){
+             jQuery('#alert-wrapper').empty();
+           }, 2400);
+         });
+       });
+     });
+   </script>
+
 </head>
 <body>
   <h1>Content</h1>
+  <div id="alert-wrapper"></div>
+  <form>
+  <label for="name">Name:</label>
+  <input type="text" id="name" class="form-control margin-bottom-fifteen" />
+  <label for="key">Key:</label>
+  <input type="text" id="key" class="form-control margin-bottom-fifteen" />
+  <label for="message">Message:</label>
+  <textarea id="message" class="form-control margin-bottom-fifteen"></textarea>
+  <input type="button" id="submit" class="btn btn-primary" value="Save" />
+  </form>
 </body>
 </html>
